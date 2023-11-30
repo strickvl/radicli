@@ -141,8 +141,7 @@ def get_arg(
     if skip_resolve:
         return arg
     if origin is Union:
-        arg_types = [a for a in args if a != type(None)]  # noqa: E721
-        if arg_types:
+        if arg_types := [a for a in args if a != type(None)]:
             return get_arg(
                 param,
                 orig_arg,
@@ -177,8 +176,7 @@ def get_arg(
         return arg
     if origin in (list, IterableType):
         if len(args) and get_origin(args[0]) is Literal:
-            literal_args = get_args(args[0])
-            if literal_args:
+            if literal_args := get_args(args[0]):
                 arg.type = type(literal_args[0])
                 arg.choices = list(literal_args)
                 arg.action = "append"
@@ -219,9 +217,10 @@ def format_table(data: List[Tuple[str, str]]) -> str:
     max_widths = [min(max(w), 50) for w in list(zip(*widths))]
     rows = []
     for item in data:
-        cols = []
-        for i, col in enumerate(item):
-            cols.append(("{:%d}" % max_widths[i]).format(str(col or "")))
+        cols = [
+            ("{:%d}" % max_widths[i]).format(str(col or ""))
+            for i, col in enumerate(item)
+        ]
         rows.append((" " * 3).join(cols))
     return "\n" + "\n".join(rows) + "\n"
 
@@ -253,27 +252,19 @@ def convert_existing_dir_path(path_str: str) -> Path:
 
 
 def convert_existing_path_or_dash(path_str: str) -> Union[Path, str]:
-    if path_str == "-":
-        return path_str
-    return convert_existing_path(path_str)
+    return path_str if path_str == "-" else convert_existing_path(path_str)
 
 
 def convert_existing_file_path_or_dash(path_str: str) -> Union[Path, str]:
-    if path_str == "-":
-        return path_str
-    return convert_existing_file_path(path_str)
+    return path_str if path_str == "-" else convert_existing_file_path(path_str)
 
 
 def convert_existing_dir_path_or_dash(path_str: str) -> Union[Path, str]:
-    if path_str == "-":
-        return path_str
-    return convert_existing_dir_path(path_str)
+    return path_str if path_str == "-" else convert_existing_dir_path(path_str)
 
 
 def convert_path_or_dash(path_str: str) -> Union[Path, str]:
-    if path_str == "-":
-        return path_str
-    return Path(path_str)
+    return path_str if path_str == "-" else Path(path_str)
 
 
 # Custom path types for custom converters

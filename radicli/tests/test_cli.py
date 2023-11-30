@@ -59,22 +59,22 @@ def test_cli_mix():
     ran = False
 
     @cli.command(
-        "test",
-        a=Arg(),
-        b=Arg("--b", "-B"),
-        c=Arg("--c", "-C"),
-        d=Arg("--d", "-D"),
-        e=Arg("--e", "-E"),
-        f=Arg("--f", "-F"),
-        g=Arg("--g", "-G"),
-    )
+            "test",
+            a=Arg(),
+            b=Arg("--b", "-B"),
+            c=Arg("--c", "-C"),
+            d=Arg("--d", "-D"),
+            e=Arg("--e", "-E"),
+            f=Arg("--f", "-F"),
+            g=Arg("--g", "-G"),
+        )
     def test(a: str, b: int, c: float, d: bool, e: bool, f: bool, g: str = "yo"):
         assert a == "hello"
         assert b == 2
         assert c == 3.0
-        assert d is True
-        assert e is True
-        assert f is False
+        assert d
+        assert e
+        assert not f
         assert g == "yo"
         nonlocal ran
         ran = True

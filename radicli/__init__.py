@@ -230,7 +230,7 @@ class Radicli:
             prog=join_strings(self.prog, name),
             description=description,
             formatter_class=HelpFormatter,
-            add_help=not any(a.arg.option == self._help_arg for a in arg_info),
+            add_help=all(a.arg.option != self._help_arg for a in arg_info),
         )
         self._add_args(p, arg_info)
         subparsers: Dict[str, Tuple[ArgumentParser, Command]] = {}
@@ -242,7 +242,7 @@ class Radicli:
                 parser_class=ArgumentParser,
             )
             for sub_name, sub_cmd in subcommands.items():
-                add_help = not any(a.arg.option == self._help_arg for a in sub_cmd.args)
+                add_help = all(a.arg.option != self._help_arg for a in sub_cmd.args)
                 subp = sp.add_parser(
                     sub_cmd.name,
                     description=sub_cmd.description,
